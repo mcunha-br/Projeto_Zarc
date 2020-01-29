@@ -19,7 +19,11 @@ public class GameManager : MonoBehaviour {
 
     private int jump;
     private int score;
-    private int level;
+    private int level = 1;
+
+    private float maxDificultLevel = 10;
+    private float scoreToNextLevel = 20;
+
 
     public int Jump {
         get { return jump; }
@@ -45,6 +49,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+
+    private void Update() {
+        if(Score >= scoreToNextLevel)
+            LevelUp();
+    }
+
     public void GameOver () {
         if (Score > PlayerPrefs.GetInt ("RECORD"))
             PlayerPrefs.SetInt ("RECORD", Score);
@@ -67,5 +77,14 @@ public class GameManager : MonoBehaviour {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             break;
         }
+    }
+
+    private void LevelUp() {
+        if(Level >= maxDificultLevel)
+            return;
+
+        Level++;
+        scoreToNextLevel *= 1.5f;
+        speed *= 1.2f;
     }
 }
